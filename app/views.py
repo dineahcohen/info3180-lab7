@@ -8,6 +8,7 @@ This file creates your application.
 import os
 from app import app
 from flask import render_template, request, jsonify
+from werkzeug.utils import secure_filename
 from app.forms import UploadForm
 
 ###
@@ -55,6 +56,13 @@ def form_errors(form):
 
     return error_messages
 
+#Saves the uploaded photo to a folder
+def assignPath(upload):
+    filename = secure_filename(upload.filename)
+    upload.save(os.path.join(
+                app.config['UPLOAD_FOLDER'], filename
+    ))
+    return filename
 
 ###
 # The functions below should be applicable to all Flask apps.
